@@ -7,6 +7,13 @@
         <attr name="mnpDefaultValue" format="integer" />
         <attr name="mnpTextSize" format="dimension" />
         <attr name="mnpTextColor" format="color" />
+        <attr name="mnpTextStyle">
+            <flag name="normal" value="0" />
+            <flag name="bold" value="1" />
+            <flag name="italic" value="2" />
+            <flag name="bold_italic" value="3" />
+        </attr>
+        <attr name="mnpFontname" format="string" />
         <attr name="mnpSeparatorColor" format="color" />
         <attr name="mnpBackgroundColor" format="color" />
         <attr name="mnpEditable" format="boolean" />

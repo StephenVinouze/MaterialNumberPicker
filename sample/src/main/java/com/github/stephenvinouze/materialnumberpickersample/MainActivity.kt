@@ -1,5 +1,6 @@
 package com.github.stephenvinouze.materialnumberpickersample
 
+import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AlertDialog
@@ -39,9 +40,11 @@ class MainActivity : AppCompatActivity() {
                     separatorColor = ContextCompat.getColor(this, R.color.colorAccent),
                     textColor = ContextCompat.getColor(this, R.color.colorPrimary),
                     textSize = resources.getDimensionPixelSize(R.dimen.numberpicker_textsize),
+                    textStyle = Typeface.BOLD_ITALIC,
                     defaultValue = 10,
                     minValue = 1,
                     maxValue = 50,
+                    fontName = "Hand.ttf",
                     formatter = NumberPicker.Formatter {
                         return@Formatter "Value $it"
                     }

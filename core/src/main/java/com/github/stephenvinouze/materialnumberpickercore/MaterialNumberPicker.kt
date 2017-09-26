@@ -3,6 +3,7 @@ package com.github.stephenvinouze.materialnumberpickercore
 import android.content.Context
 import android.graphics.Color
 import android.graphics.Paint
+import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
 import android.util.AttributeSet
 import android.util.TypedValue
@@ -19,6 +20,7 @@ class MaterialNumberPicker : NumberPicker {
         private const val DEFAULT_SEPARATOR_COLOR = Color.TRANSPARENT
         private const val DEFAULT_TEXT_COLOR = Color.BLACK
         private const val DEFAULT_TEXT_SIZE = 40
+        private const val DEFAULT_TEXT_STYLE = Typeface.NORMAL
         private const val DEFAULT_VALUE = 1
         private const val MAX_VALUE = 10
         private const val DEFAULT_EDITABLE = false
@@ -50,6 +52,12 @@ class MaterialNumberPicker : NumberPicker {
             updateTextAttributes()
         }
 
+    var textStyle: Int = DEFAULT_TEXT_STYLE
+        set(value) {
+            field = value
+            updateTextAttributes()
+        }
+
     var textSize: Int = DEFAULT_TEXT_SIZE
         set(value) {
             field = value
@@ -62,20 +70,30 @@ class MaterialNumberPicker : NumberPicker {
             descendantFocusability = if (value) ViewGroup.FOCUS_AFTER_DESCENDANTS else ViewGroup.FOCUS_BLOCK_DESCENDANTS
         }
 
+    var fontName: String? = null
+        set(value) {
+            field = value
+            updateTextAttributes()
+        }
+
     constructor(context: Context,
                 separatorColor: Int = DEFAULT_SEPARATOR_COLOR,
                 textColor: Int = DEFAULT_TEXT_COLOR,
                 textSize: Int = DEFAULT_TEXT_SIZE,
+                textStyle: Int = DEFAULT_TEXT_STYLE,
                 editable: Boolean = DEFAULT_EDITABLE,
                 wrapped: Boolean = DEFAULT_EDITABLE,
                 defaultValue: Int = DEFAULT_VALUE,
                 minValue: Int = DEFAULT_VALUE,
                 maxValue: Int = MAX_VALUE,
+                fontName: String? = null,
                 formatter: Formatter? = null
     ) : super(context) {
         this.separatorColor = separatorColor
         this.textColor = textColor
         this.textSize = textSize
+        this.textStyle = textStyle
+        this.fontName = fontName
         this.editable = editable
         this.wrapSelectorWheel = wrapped
         this.value = defaultValue
@@ -92,6 +110,8 @@ class MaterialNumberPicker : NumberPicker {
         separatorColor = a.getColor(R.styleable.MaterialNumberPicker_mnpSeparatorColor, DEFAULT_SEPARATOR_COLOR)
         textColor = a.getColor(R.styleable.MaterialNumberPicker_mnpTextColor, DEFAULT_TEXT_COLOR)
         textSize = a.getDimensionPixelSize(R.styleable.MaterialNumberPicker_mnpTextSize, DEFAULT_TEXT_SIZE)
+        textStyle = a.getInt(R.styleable.MaterialNumberPicker_mnpTextColor, DEFAULT_TEXT_STYLE)
+        fontName = a.getString(R.styleable.MaterialNumberPicker_mnpFontname)
         editable = a.getBoolean(R.styleable.MaterialNumberPicker_mnpEditable, DEFAULT_EDITABLE)
         wrapSelectorWheel = a.getBoolean(R.styleable.MaterialNumberPicker_mnpWrapped, DEFAULT_WRAPPED)
 
@@ -135,12 +155,16 @@ class MaterialNumberPicker : NumberPicker {
                     val selectorWheelPaintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
                     selectorWheelPaintField.isAccessible = true
 
+                    val typeface = if (fontName != null) Typeface.createFromAsset(context.assets, "fonts/$fontName") else Typeface.create(Typeface.DEFAULT, textStyle)
+
                     val wheelPaint = selectorWheelPaintField.get(this) as Paint
                     wheelPaint.color = textColor
                     wheelPaint.textSize = textSize.toFloat()
+                    wheelPaint.typeface = typeface
 
                     child.setTextColor(textColor)
                     child.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
+                    child.typeface = typeface
 
                     invalidate()
                     break
