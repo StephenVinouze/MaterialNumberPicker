@@ -90,7 +90,6 @@ class MaterialNumberPicker : NumberPicker {
         field
     }
 
-
     constructor(context: Context,
                 separatorColor: Int = DEFAULT_SEPARATOR_COLOR,
                 textColor: Int = DEFAULT_TEXT_COLOR,
