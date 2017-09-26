@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.Typeface
 import android.graphics.drawable.ColorDrawable
+import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
@@ -164,6 +165,7 @@ class MaterialNumberPicker : NumberPicker {
 
                     child.setTextColor(textColor)
                     child.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
+                    child.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
                     child.typeface = typeface
 
                     invalidate()
