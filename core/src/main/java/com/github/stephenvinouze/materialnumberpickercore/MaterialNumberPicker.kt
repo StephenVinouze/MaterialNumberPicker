@@ -11,6 +11,7 @@ import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.NumberPicker
+import java.lang.reflect.Field
 
 /**
  * Created by stephenvinouze on 25/09/2017.
@@ -31,19 +32,12 @@ class MaterialNumberPicker : NumberPicker {
     var separatorColor: Int = Color.TRANSPARENT
         set(value) {
             field = value
-            val pickerFields = NumberPicker::class.java.declaredFields
-            for (pf in pickerFields) {
-                if (pf.name == "mSelectionDivider") {
-                    pf.isAccessible = true
-                    try {
-                        pf.set(this, ColorDrawable(separatorColor))
-                    } catch (e: IllegalAccessException) {
-                        e.printStackTrace()
-                    } catch (e: IllegalArgumentException) {
-                        e.printStackTrace()
-                    }
-                    break
-                }
+            try {
+                dividerField?.set(this, ColorDrawable(separatorColor))
+            } catch (e: IllegalAccessException) {
+                e.printStackTrace()
+            } catch (e: IllegalArgumentException) {
+                e.printStackTrace()
             }
         }
 
@@ -76,6 +70,26 @@ class MaterialNumberPicker : NumberPicker {
             field = value
             updateTextAttributes()
         }
+
+    private val wheelField: Field by lazy {
+        val selectorWheelPaintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
+        selectorWheelPaintField.isAccessible = true
+        selectorWheelPaintField
+    }
+
+    private val dividerField: Field? by lazy {
+        var field: Field? = null
+        val fields = NumberPicker::class.java.declaredFields
+        for (f in fields) {
+            if (f.name == "mSelectionDivider") {
+                f.isAccessible = true
+                field = f
+                break
+            }
+        }
+        field
+    }
+
 
     constructor(context: Context,
                 separatorColor: Int = DEFAULT_SEPARATOR_COLOR,
@@ -137,11 +151,11 @@ class MaterialNumberPicker : NumberPicker {
             val inputText = f.get(this) as EditText
             inputText.filters = arrayOfNulls(0)
         } catch (e: NoSuchFieldException) {
-            e.printStackTrace()
+            // nothing to do, ignoring
         } catch (e: IllegalAccessException) {
-            e.printStackTrace()
+            // nothing to do, ignoring
         } catch (e: IllegalArgumentException) {
-            e.printStackTrace()
+            // nothing to do, ignoring
         }
     }
 
@@ -149,20 +163,16 @@ class MaterialNumberPicker : NumberPicker {
      * Uses reflection to access text size private attribute for both wheel and edit text inside the number picker.
      */
     private fun updateTextAttributes() {
-        for (i in 0 until childCount) {
-            val child = getChildAt(i)
-            if (child is EditText) {
-                try {
-                    val selectorWheelPaintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
-                    selectorWheelPaintField.isAccessible = true
+        val typeface = if (fontName != null) Typeface.createFromAsset(context.assets, "fonts/$fontName") else Typeface.create(Typeface.DEFAULT, textStyle)
+        try {
+            val wheelPaint = wheelField.get(this) as Paint
+            wheelPaint.color = textColor
+            wheelPaint.textSize = textSize.toFloat()
+            wheelPaint.typeface = typeface
 
-                    val typeface = if (fontName != null) Typeface.createFromAsset(context.assets, "fonts/$fontName") else Typeface.create(Typeface.DEFAULT, textStyle)
-
-                    val wheelPaint = selectorWheelPaintField.get(this) as Paint
-                    wheelPaint.color = textColor
-                    wheelPaint.textSize = textSize.toFloat()
-                    wheelPaint.typeface = typeface
-
+            for (i in 0 until childCount) {
+                val child = getChildAt(i)
+                if (child is EditText) {
                     child.setTextColor(textColor)
                     child.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
                     child.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
@@ -170,14 +180,14 @@ class MaterialNumberPicker : NumberPicker {
 
                     invalidate()
                     break
-                } catch (e: NoSuchFieldException) {
-                    e.printStackTrace()
-                } catch (e: IllegalAccessException) {
-                    e.printStackTrace()
-                } catch (e: IllegalArgumentException) {
-                    e.printStackTrace()
                 }
             }
+        } catch (e: NoSuchFieldException) {
+            // nothing to do, ignoring
+        } catch (e: IllegalAccessException) {
+            // nothing to do, ignoring
+        } catch (e: IllegalArgumentException) {
+            // nothing to do, ignoring
         }
     }
 
