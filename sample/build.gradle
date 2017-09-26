@@ -7,7 +7,7 @@ android {
 
     defaultConfig {
         applicationId "com.github.stephenvinouze.materialnumberpicker_sample"
-        minSdkVersion Integer.parseInt(ANDROID_MIN_SDK_VERSION)
+        minSdkVersion 14
         targetSdkVersion Integer.parseInt(ANDROID_BUILD_SDK_VERSION)
         versionCode 1
         versionName "1.0"
