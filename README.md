@@ -22,6 +22,18 @@ Then add the dependencies that you need in your project.
 
 ```gradle
 dependencies {
-  compile "com.github.StephenVinouze:MaterialNumberPicker:1.0.0"
+  compile "com.github.StephenVinouze:MaterialNumberPicker:{latest_version}"
 }
 ```
+
+## Pull requests
+
+I welcome and encourage all pull requests. I might not be able to respond as fast as I would want to but I endeavor to be as responsive as possible.
+
+All PR must:
+
+1. Be written in Kotlin
+2. Maintain code style
+3. Indicate whether it is a enhancement, bug fix or anything else
+4. Provide a clear description of what your PR brings
+5. Enjoy coding in Kotlin :)
