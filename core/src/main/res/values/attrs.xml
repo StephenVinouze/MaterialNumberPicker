@@ -15,7 +15,6 @@
         </attr>
         <attr name="mnpFontname" format="string" />
         <attr name="mnpSeparatorColor" format="color" />
-        <attr name="mnpBackgroundColor" format="color" />
         <attr name="mnpEditable" format="boolean" />
         <attr name="mnpWrapped" format="boolean" />
     </declare-styleable>
