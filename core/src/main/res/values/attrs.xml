@@ -2,9 +2,10 @@
 <resources>
 
     <declare-styleable name="MaterialNumberPicker">
-        <attr name="mnpDefaultValue" format="integer" />
         <attr name="mnpMinValue" format="integer" />
         <attr name="mnpMaxValue" format="integer" />
+        <attr name="mnpValue" format="integer" />
+        <attr name="mnpSeparatorColor" format="color" />
         <attr name="mnpTextSize" format="dimension" />
         <attr name="mnpTextColor" format="color" />
         <attr name="mnpTextStyle">
@@ -13,10 +14,9 @@
             <flag name="italic" value="2" />
             <flag name="bold_italic" value="3" />
         </attr>
-        <attr name="mnpFontname" format="string" />
-        <attr name="mnpSeparatorColor" format="color" />
         <attr name="mnpEditable" format="boolean" />
         <attr name="mnpWrapped" format="boolean" />
+        <attr name="mnpFontname" format="string" />
     </declare-styleable>
 
 </resources>

@@ -19,12 +19,12 @@ import java.lang.reflect.Field
 class MaterialNumberPicker : NumberPicker {
 
     companion object {
+        private const val DEFAULT_VALUE = 1
+        private const val MAX_VALUE = 10
         private const val DEFAULT_SEPARATOR_COLOR = Color.TRANSPARENT
         private const val DEFAULT_TEXT_COLOR = Color.BLACK
         private const val DEFAULT_TEXT_SIZE = 40
         private const val DEFAULT_TEXT_STYLE = Typeface.NORMAL
-        private const val DEFAULT_VALUE = 1
-        private const val MAX_VALUE = 10
         private const val DEFAULT_EDITABLE = false
         private const val DEFAULT_WRAPPED = false
     }
@@ -90,19 +90,23 @@ class MaterialNumberPicker : NumberPicker {
         field
     }
 
+    @JvmOverloads
     constructor(context: Context,
+                minValue: Int = DEFAULT_VALUE,
+                maxValue: Int = MAX_VALUE,
+                value: Int = DEFAULT_VALUE,
                 separatorColor: Int = DEFAULT_SEPARATOR_COLOR,
                 textColor: Int = DEFAULT_TEXT_COLOR,
                 textSize: Int = DEFAULT_TEXT_SIZE,
                 textStyle: Int = DEFAULT_TEXT_STYLE,
                 editable: Boolean = DEFAULT_EDITABLE,
                 wrapped: Boolean = DEFAULT_EDITABLE,
-                defaultValue: Int = DEFAULT_VALUE,
-                minValue: Int = DEFAULT_VALUE,
-                maxValue: Int = MAX_VALUE,
                 fontName: String? = null,
                 formatter: Formatter? = null
     ) : super(context) {
+        this.minValue = minValue
+        this.maxValue = maxValue
+        this.value = value
         this.separatorColor = separatorColor
         this.textColor = textColor
         this.textSize = textSize
@@ -110,9 +114,6 @@ class MaterialNumberPicker : NumberPicker {
         this.fontName = fontName
         this.editable = editable
         this.wrapSelectorWheel = wrapped
-        this.value = defaultValue
-        this.minValue = minValue
-        this.maxValue = maxValue
         setFormatter(formatter)
 
         disableFocusability()
@@ -121,17 +122,16 @@ class MaterialNumberPicker : NumberPicker {
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
         val a = context.theme.obtainStyledAttributes(attrs, R.styleable.MaterialNumberPicker, 0, 0)
 
+        minValue = a.getInteger(R.styleable.MaterialNumberPicker_mnpMinValue, DEFAULT_VALUE)
+        maxValue = a.getInteger(R.styleable.MaterialNumberPicker_mnpMaxValue, MAX_VALUE)
+        value = a.getInteger(R.styleable.MaterialNumberPicker_mnpValue, DEFAULT_VALUE)
         separatorColor = a.getColor(R.styleable.MaterialNumberPicker_mnpSeparatorColor, DEFAULT_SEPARATOR_COLOR)
         textColor = a.getColor(R.styleable.MaterialNumberPicker_mnpTextColor, DEFAULT_TEXT_COLOR)
         textSize = a.getDimensionPixelSize(R.styleable.MaterialNumberPicker_mnpTextSize, DEFAULT_TEXT_SIZE)
         textStyle = a.getInt(R.styleable.MaterialNumberPicker_mnpTextColor, DEFAULT_TEXT_STYLE)
-        fontName = a.getString(R.styleable.MaterialNumberPicker_mnpFontname)
         editable = a.getBoolean(R.styleable.MaterialNumberPicker_mnpEditable, DEFAULT_EDITABLE)
         wrapSelectorWheel = a.getBoolean(R.styleable.MaterialNumberPicker_mnpWrapped, DEFAULT_WRAPPED)
-
-        value = a.getInteger(R.styleable.MaterialNumberPicker_mnpDefaultValue, DEFAULT_VALUE)
-        minValue = a.getInteger(R.styleable.MaterialNumberPicker_mnpMinValue, DEFAULT_VALUE)
-        maxValue = a.getInteger(R.styleable.MaterialNumberPicker_mnpMaxValue, MAX_VALUE)
+        fontName = a.getString(R.styleable.MaterialNumberPicker_mnpFontname)
 
         a.recycle()
 

@@ -37,13 +37,15 @@ class MainActivity : AppCompatActivity() {
         customButton.setOnClickListener {
             val numberPicker = MaterialNumberPicker(
                     context = this,
+                    minValue = 1,
+                    maxValue = 50,
+                    value = 10,
                     separatorColor = ContextCompat.getColor(this, R.color.colorAccent),
                     textColor = ContextCompat.getColor(this, R.color.colorPrimary),
                     textSize = resources.getDimensionPixelSize(R.dimen.numberpicker_textsize),
                     textStyle = Typeface.BOLD_ITALIC,
-                    defaultValue = 10,
-                    minValue = 1,
-                    maxValue = 50,
+                    editable = false,
+                    wrapped = false,
                     fontName = "Hand.ttf",
                     formatter = NumberPicker.Formatter {
                         return@Formatter "Value $it"

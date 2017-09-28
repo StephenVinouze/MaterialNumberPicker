@@ -1,1 +1,1 @@
-include ':sample', ':core'
+include ':sample', ':core', ':javasample'

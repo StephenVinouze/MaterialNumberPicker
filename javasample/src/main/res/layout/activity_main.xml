@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="30dp"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <Button
+        android:id="@+id/default_number_picker_button"
+        style="@style/Button"
+        android:text="@string/alert_default_title" />
+
+    <Button
+        android:id="@+id/simple_number_picker_button"
+        style="@style/Button"
+        android:layout_marginTop="16dp"
+        android:text="@string/alert_simple_title" />
+
+    <Button
+        android:id="@+id/custom_number_picker_button"
+        style="@style/Button"
+        android:layout_marginTop="16dp"
+        android:text="@string/alert_custom_title" />
+
+</LinearLayout>
