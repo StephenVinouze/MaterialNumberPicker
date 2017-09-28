@@ -72,6 +72,37 @@ val numberPicker = MaterialNumberPicker(
 )
 ```
 
+For Java users, I have overloaded the constructor so that it generates all possible constructors.
+
+```java
+MaterialNumberPicker numberPicker = new MaterialNumberPicker(
+        this,
+        1,
+        50,
+        10,
+        ContextCompat.getColor(this, R.color.colorAccent),
+        ContextCompat.getColor(this, R.color.colorPrimary),
+        getResources().getDimensionPixelSize(R.dimen.numberpicker_textsize),
+        Typeface.BOLD_ITALIC,
+        false,
+        false,
+        "Hand.ttf",
+        new NumberPicker.Formatter() {
+            @Override
+            public String format(int i) {
+                return "Value " + i;
+            }
+        }
+);
+```
+
+I have arranged the parameters in priority order but it is not as ideal as in Koltin because you can't name the attributes nor change their orders. However, all attributes are exposed with getter/setters so you can easily set the desired attributes after instanciating the picker with the default constructor.
+
+```java
+MaterialNumberPicker numberPicker = new MaterialNumberPicker(this);
+numberPicker.setTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+```
+
 Once you have your number picker, you can present it by itself, or within an alert dialog :
 
 ```kotlin
