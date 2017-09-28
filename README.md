@@ -19,7 +19,6 @@ Add this in your root `build.gradle` file:
 ```gradle
 allprojects {
 	repositories {
-		// ... other repositories
 		maven { url "https://jitpack.io" }
 	}
 }
@@ -29,7 +28,7 @@ Then add the dependencies that you need in your project.
 
 ```gradle
 dependencies {
-  compile "com.github.StephenVinouze:MaterialNumberPicker:{latest_version}"
+    compile "com.github.StephenVinouze:MaterialNumberPicker:{latest_version}"
 }
 ```
 
@@ -41,28 +40,28 @@ Both XML and programmatic instanciations are supported :
 <com.github.stephenvinouze.materialnumberpickercore.MaterialNumberPicker
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:mnpDefaultValue="10"
-        app:mnpEditable="false"
-        app:mnpFontname="Hand.ttf"
         app:mnpMaxValue="50"
         app:mnpMinValue="1"
+        app:mnpEditable="false"
+        app:mnpFontname="Hand.ttf"
         app:mnpSeparatorColor="@color/colorAccent"
         app:mnpTextColor="@color/colorPrimary"
         app:mnpTextSize="16sp"
         app:mnpTextStyle="bold"
+        app:mnpValue="10"
         app:mnpWrapped="false" />
 ```
 
 ```kotlin
 val numberPicker = MaterialNumberPicker(
         context = this,
+        minValue = 1,
+        maxValue = 50,
+        value = 10,
         separatorColor = ContextCompat.getColor(this, R.color.colorAccent),
         textColor = ContextCompat.getColor(this, R.color.colorPrimary),
         textSize = resources.getDimensionPixelSize(R.dimen.numberpicker_textsize),
         textStyle = Typeface.BOLD_ITALIC,
-        defaultValue = 10,
-        minValue = 1,
-        maxValue = 50,
         editable = false,
         wrapped = false,
         fontName = "Hand.ttf",
