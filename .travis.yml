@@ -3,8 +3,8 @@ android:
   components:
     - tools
     - platform-tools
-    - build-tools-26.0.1
-    - android-26
+    - build-tools-27.0.3
+    - android-27
     - extra-android-m2repository
 
 jdk: oraclejdk8
@@ -18,3 +18,6 @@ env:
 script:
   # By default Travis-ci executes './gradlew build connectedCheck' if no 'script:' section found.
   - ./gradlew build
+
+before_install:
+  - yes | sdkmanager "platforms;android-27"
