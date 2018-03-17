@@ -1,7 +1,7 @@
 # MaterialNumberPicker
 
 [![Release](https://jitpack.io/v/StephenVinouze/MaterialNumberPicker.svg)](https://jitpack.io/#StephenVinouze/MaterialNumberPicker)
-[![Build Status](https://travis-ci.org/StephenVinouze/MaterialNumberPicker.svg)](https://travis-ci.org/StephenVinouze/MaterialNumberPicker)
+[![Build Status](https://www.bitrise.io/app/a9347fe1411caa03/status.svg?token=2_qAATk3cj48rl0eFYGE1A&branch=master)](https://www.bitrise.io/app/a9347fe1411caa03)
 [![API](https://img.shields.io/badge/API-11%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=11)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-MaterialNumberPicker-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/6250)
 [![GitHub license](http://img.shields.io/badge/license-APACHE2-blue.svg)](https://github.com/StephenVinouze/AdvancedRecyclerView/blob/master/LICENSE)
