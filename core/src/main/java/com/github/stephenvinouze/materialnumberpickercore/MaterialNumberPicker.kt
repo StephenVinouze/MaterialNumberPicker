@@ -100,7 +100,7 @@ class MaterialNumberPicker : NumberPicker {
                 textSize: Int = DEFAULT_TEXT_SIZE,
                 textStyle: Int = DEFAULT_TEXT_STYLE,
                 editable: Boolean = DEFAULT_EDITABLE,
-                wrapped: Boolean = DEFAULT_EDITABLE,
+                wrapped: Boolean = DEFAULT_WRAPPED,
                 fontName: String? = null,
                 formatter: Formatter? = null
     ) : super(context) {
