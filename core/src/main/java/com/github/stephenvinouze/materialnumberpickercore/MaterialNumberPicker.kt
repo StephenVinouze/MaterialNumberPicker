@@ -1,17 +1,14 @@
 package com.github.stephenvinouze.materialnumberpickercore
 
 import android.content.Context
-import android.graphics.Color
-import android.graphics.Paint
-import android.graphics.Typeface
-import android.graphics.drawable.ColorDrawable
+import android.graphics.*
+import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.NumberPicker
-import java.lang.reflect.Field
 
 /**
  * Created by stephenvinouze on 25/09/2017.
@@ -32,13 +29,7 @@ class MaterialNumberPicker : NumberPicker {
     var separatorColor: Int = Color.TRANSPARENT
         set(value) {
             field = value
-            try {
-                dividerField?.set(this, ColorDrawable(separatorColor))
-            } catch (e: IllegalAccessException) {
-                e.printStackTrace()
-            } catch (e: IllegalArgumentException) {
-                e.printStackTrace()
-            }
+            divider?.colorFilter = PorterDuffColorFilter(separatorColor, PorterDuff.Mode.SRC_IN)
         }
 
     var textColor: Int = DEFAULT_TEXT_COLOR
@@ -71,23 +62,36 @@ class MaterialNumberPicker : NumberPicker {
             updateTextAttributes()
         }
 
-    private val wheelField: Field by lazy {
-        val selectorWheelPaintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
-        selectorWheelPaintField.isAccessible = true
-        selectorWheelPaintField
+    private val inputEditText: EditText? by lazy {
+        try {
+            val f = NumberPicker::class.java.getDeclaredField("mInputText")
+            f.isAccessible = true
+            f.get(this) as EditText
+        } catch (e: Exception) {
+            null
+        }
     }
 
-    private val dividerField: Field? by lazy {
-        var field: Field? = null
-        val fields = NumberPicker::class.java.declaredFields
-        for (f in fields) {
-            if (f.name == "mSelectionDivider") {
-                f.isAccessible = true
-                field = f
-                break
+    private val wheelPaint: Paint? by lazy {
+        try {
+            val selectorWheelPaintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
+            selectorWheelPaintField.isAccessible = true
+            selectorWheelPaintField.get(this) as Paint
+        } catch (e: Exception) {
+            null
+        }
+    }
+
+    private val divider: Drawable? by lazy {
+        val dividerField = NumberPicker::class.java.declaredFields.firstOrNull { it.name == "mSelectionDivider" }
+        dividerField?.let {
+            try {
+                it.isAccessible = true
+                it.get(this) as Drawable
+            } catch (e: Exception) {
+                null
             }
         }
-        field
     }
 
     @JvmOverloads
@@ -144,18 +148,7 @@ class MaterialNumberPicker : NumberPicker {
      * This is still an open Google @see <a href="https://code.google.com/p/android/issues/detail?id=35482#c9">issue</a> from 2012
      */
     private fun disableFocusability() {
-        try {
-            val f = NumberPicker::class.java.getDeclaredField("mInputText")
-            f.isAccessible = true
-            val inputText = f.get(this) as EditText
-            inputText.filters = arrayOfNulls(0)
-        } catch (e: NoSuchFieldException) {
-            // nothing to do, ignoring
-        } catch (e: IllegalAccessException) {
-            // nothing to do, ignoring
-        } catch (e: IllegalArgumentException) {
-            // nothing to do, ignoring
-        }
+        inputEditText?.filters = arrayOfNulls(0)
     }
 
     /**
@@ -163,30 +156,20 @@ class MaterialNumberPicker : NumberPicker {
      */
     private fun updateTextAttributes() {
         val typeface = if (fontName != null) Typeface.createFromAsset(context.assets, "fonts/$fontName") else Typeface.create(Typeface.DEFAULT, textStyle)
-        try {
-            val wheelPaint = wheelField.get(this) as Paint
-            wheelPaint.color = textColor
-            wheelPaint.textSize = textSize.toFloat()
-            wheelPaint.typeface = typeface
+        wheelPaint?.let {
+            it.color = textColor
+            it.textSize = textSize.toFloat()
+            it.typeface = typeface
 
-            for (i in 0 until childCount) {
-                val child = getChildAt(i)
-                if (child is EditText) {
-                    child.setTextColor(textColor)
-                    child.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
-                    child.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
-                    child.typeface = typeface
+            val childEditText = (0 until childCount).map { getChildAt(it) as? EditText }.firstOrNull()
+            childEditText?.let {
+                it.setTextColor(textColor)
+                it.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
+                it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
+                it.typeface = typeface
 
-                    invalidate()
-                    break
-                }
+                invalidate()
             }
-        } catch (e: NoSuchFieldException) {
-            // nothing to do, ignoring
-        } catch (e: IllegalAccessException) {
-            // nothing to do, ignoring
-        } catch (e: IllegalArgumentException) {
-            // nothing to do, ignoring
         }
     }
 
