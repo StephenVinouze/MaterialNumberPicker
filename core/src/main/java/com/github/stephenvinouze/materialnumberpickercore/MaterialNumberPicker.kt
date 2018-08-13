@@ -156,10 +156,10 @@ class MaterialNumberPicker : NumberPicker {
      */
     private fun updateTextAttributes() {
         val typeface = if (fontName != null) Typeface.createFromAsset(context.assets, "fonts/$fontName") else Typeface.create(Typeface.DEFAULT, textStyle)
-        wheelPaint?.let {
-            it.color = textColor
-            it.textSize = textSize.toFloat()
-            it.typeface = typeface
+        wheelPaint?.let { paint ->
+            paint.color = textColor
+            paint.textSize = textSize.toFloat()
+            paint.typeface = typeface
 
             val childEditText = (0 until childCount).map { getChildAt(it) as? EditText }.firstOrNull()
             childEditText?.let {

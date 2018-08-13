@@ -47,8 +47,8 @@ class MainActivity : AppCompatActivity() {
                     editable = false,
                     wrapped = false,
                     fontName = "Hand.ttf",
-                    formatter = NumberPicker.Formatter {
-                        return@Formatter "Value $it"
+                    formatter = NumberPicker.Formatter {value ->
+                        return@Formatter "Value $value"
                     }
             )
             presentPickerInAlert(numberPicker, getString(R.string.alert_custom_title))
@@ -60,9 +60,9 @@ class MainActivity : AppCompatActivity() {
                 .setTitle(title)
                 .setView(numberPicker)
                 .setNegativeButton(getString(android.R.string.cancel), null)
-                .setPositiveButton(getString(android.R.string.ok), { _, _ ->
+                .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
                     Toast.makeText(this, getString(R.string.picker_value, numberPicker.value), Toast.LENGTH_LONG).show()
-                })
+                }
                 .show()
     }
 
