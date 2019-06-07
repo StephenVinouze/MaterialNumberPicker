@@ -35,37 +35,31 @@ class MaterialNumberPicker : NumberPicker {
             field = value
             divider?.colorFilter = PorterDuffColorFilter(separatorColor, PorterDuff.Mode.SRC_IN)
         }
-
     var textColor: Int = DEFAULT_TEXT_COLOR
         set(value) {
             field = value
             updateTextAttributes()
         }
-
     var textStyle: Int = DEFAULT_TEXT_STYLE
         set(value) {
             field = value
             updateTextAttributes()
         }
-
     var textSize: Int = DEFAULT_TEXT_SIZE
         set(value) {
             field = value
             updateTextAttributes()
         }
-
     var editable: Boolean = DEFAULT_EDITABLE
         set(value) {
             field = value
             descendantFocusability = if (value) ViewGroup.FOCUS_AFTER_DESCENDANTS else ViewGroup.FOCUS_BLOCK_DESCENDANTS
         }
-
     var fontName: String? = null
         set(value) {
             field = value
             updateTextAttributes()
         }
-
     private val inputEditText: EditText? by lazy {
         try {
             val f = NumberPicker::class.java.getDeclaredField("mInputText")
@@ -75,7 +69,6 @@ class MaterialNumberPicker : NumberPicker {
             null
         }
     }
-
     private val wheelPaint: Paint? by lazy {
         try {
             val selectorWheelPaintField = NumberPicker::class.java.getDeclaredField("mSelectorWheelPaint")
@@ -85,7 +78,6 @@ class MaterialNumberPicker : NumberPicker {
             null
         }
     }
-
     private val divider: Drawable? by lazy {
         val dividerField = NumberPicker::class.java.declaredFields.firstOrNull { it.name == "mSelectionDivider" }
         dividerField?.let {
@@ -99,18 +91,19 @@ class MaterialNumberPicker : NumberPicker {
     }
 
     @JvmOverloads
-    constructor(context: Context,
-                minValue: Int = DEFAULT_VALUE,
-                maxValue: Int = MAX_VALUE,
-                value: Int = DEFAULT_VALUE,
-                separatorColor: Int = DEFAULT_SEPARATOR_COLOR,
-                textColor: Int = DEFAULT_TEXT_COLOR,
-                textSize: Int = DEFAULT_TEXT_SIZE,
-                textStyle: Int = DEFAULT_TEXT_STYLE,
-                editable: Boolean = DEFAULT_EDITABLE,
-                wrapped: Boolean = DEFAULT_WRAPPED,
-                fontName: String? = null,
-                formatter: Formatter? = null
+    constructor(
+        context: Context,
+        minValue: Int = DEFAULT_VALUE,
+        maxValue: Int = MAX_VALUE,
+        value: Int = DEFAULT_VALUE,
+        separatorColor: Int = DEFAULT_SEPARATOR_COLOR,
+        textColor: Int = DEFAULT_TEXT_COLOR,
+        textSize: Int = DEFAULT_TEXT_SIZE,
+        textStyle: Int = DEFAULT_TEXT_STYLE,
+        editable: Boolean = DEFAULT_EDITABLE,
+        wrapped: Boolean = DEFAULT_WRAPPED,
+        fontName: String? = null,
+        formatter: Formatter? = null
     ) : super(context) {
         this.minValue = minValue
         this.maxValue = maxValue
@@ -159,25 +152,29 @@ class MaterialNumberPicker : NumberPicker {
      * Uses reflection to access text size private attribute for both wheel and edit text inside the number picker.
      */
     private fun updateTextAttributes() {
-        val typeface = if (fontName != null) Typeface.createFromAsset(context.assets, "fonts/$fontName") else Typeface.create(Typeface.DEFAULT, textStyle)
+        val typeface = if (fontName != null)
+            Typeface.createFromAsset(context.assets, "fonts/$fontName")
+        else
+            Typeface.create(Typeface.DEFAULT, textStyle)
+
         wheelPaint?.let { paint ->
             paint.color = textColor
             paint.textSize = textSize.toFloat()
             paint.typeface = typeface
+            (0 until childCount)
+                .map { getChildAt(it) as? EditText }
+                .firstOrNull()
+                ?.let {
+                    it.setTextColor(textColor)
+                    it.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
+                    it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
+                    it.typeface = typeface
 
-            val childEditText = (0 until childCount).map { getChildAt(it) as? EditText }.firstOrNull()
-            childEditText?.let {
-                it.setTextColor(textColor)
-                it.setTextSize(TypedValue.COMPLEX_UNIT_SP, pixelsToSp(context, textSize.toFloat()))
-                it.inputType = InputType.TYPE_CLASS_NUMBER or InputType.TYPE_NUMBER_VARIATION_NORMAL
-                it.typeface = typeface
-
-                invalidate()
-            }
+                    invalidate()
+                }
         }
     }
 
     private fun pixelsToSp(context: Context, px: Float): Float =
-            px / context.resources.displayMetrics.scaledDensity
-
+        px / context.resources.displayMetrics.scaledDensity
 }

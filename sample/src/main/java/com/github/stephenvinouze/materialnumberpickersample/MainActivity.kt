@@ -10,7 +10,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
 import com.github.stephenvinouze.materialnumberpickercore.MaterialNumberPicker
 
-
 /**
  * Created by stephenvinouze on 25/09/2017.
  */
@@ -36,20 +35,20 @@ class MainActivity : AppCompatActivity() {
         }
         customButton.setOnClickListener {
             val numberPicker = MaterialNumberPicker(
-                    context = this,
-                    minValue = 1,
-                    maxValue = 50,
-                    value = 10,
-                    separatorColor = ContextCompat.getColor(this, R.color.colorAccent),
-                    textColor = ContextCompat.getColor(this, R.color.colorPrimary),
-                    textSize = resources.getDimensionPixelSize(R.dimen.numberpicker_textsize),
-                    textStyle = Typeface.BOLD_ITALIC,
-                    editable = false,
-                    wrapped = false,
-                    fontName = "Hand.ttf",
-                    formatter = NumberPicker.Formatter {value ->
-                        return@Formatter "Value $value"
-                    }
+                context = this,
+                minValue = 1,
+                maxValue = 50,
+                value = 10,
+                separatorColor = ContextCompat.getColor(this, R.color.colorAccent),
+                textColor = ContextCompat.getColor(this, R.color.colorPrimary),
+                textSize = resources.getDimensionPixelSize(R.dimen.numberpicker_textsize),
+                textStyle = Typeface.BOLD_ITALIC,
+                editable = false,
+                wrapped = false,
+                fontName = "Hand.ttf",
+                formatter = NumberPicker.Formatter { value ->
+                    return@Formatter "Value $value"
+                }
             )
             presentPickerInAlert(numberPicker, getString(R.string.alert_custom_title))
         }
@@ -57,13 +56,12 @@ class MainActivity : AppCompatActivity() {
 
     private fun presentPickerInAlert(numberPicker: NumberPicker, title: String) {
         AlertDialog.Builder(this)
-                .setTitle(title)
-                .setView(numberPicker)
-                .setNegativeButton(getString(android.R.string.cancel), null)
-                .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
-                    Toast.makeText(this, getString(R.string.picker_value, numberPicker.value), Toast.LENGTH_LONG).show()
-                }
-                .show()
+            .setTitle(title)
+            .setView(numberPicker)
+            .setNegativeButton(getString(android.R.string.cancel), null)
+            .setPositiveButton(getString(android.R.string.ok)) { _, _ ->
+                Toast.makeText(this, getString(R.string.picker_value, numberPicker.value), Toast.LENGTH_LONG).show()
+            }
+            .show()
     }
-
 }
