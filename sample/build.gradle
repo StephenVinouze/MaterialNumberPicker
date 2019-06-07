@@ -25,6 +25,6 @@ dependencies {
     implementation project(':core')
     testImplementation 'junit:junit:4.12'
 
-    implementation "com.android.support:appcompat-v7:$ANDROID_APPCOMPAT_VERSION"
+    implementation 'androidx.appcompat:appcompat:1.0.2'
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
 }

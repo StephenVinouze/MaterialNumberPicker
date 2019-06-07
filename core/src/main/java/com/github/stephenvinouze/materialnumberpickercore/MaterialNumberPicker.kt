@@ -1,7 +1,11 @@
 package com.github.stephenvinouze.materialnumberpickercore
 
 import android.content.Context
-import android.graphics.*
+import android.graphics.Color
+import android.graphics.Paint
+import android.graphics.PorterDuff
+import android.graphics.PorterDuffColorFilter
+import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.text.InputType
 import android.util.AttributeSet
