@@ -60,6 +60,8 @@ class MaterialNumberPicker : NumberPicker {
             field = value
             updateTextAttributes()
         }
+    private var fontNameTypeFace: Typeface? = null
+
     private val inputEditText: EditText? by lazy {
         try {
             val f = NumberPicker::class.java.getDeclaredField("mInputText")
@@ -149,10 +151,18 @@ class MaterialNumberPicker : NumberPicker {
     }
 
     /**
+     *  Set the font name using your own typeface (example: if you have the font in the resources folder)
+     */
+    private fun setFontName(typeface: Typeface) {
+        fontNameTypeFace = typeface
+        updateTextAttributes()
+    }
+
+    /**
      * Uses reflection to access text size private attribute for both wheel and edit text inside the number picker.
      */
     private fun updateTextAttributes() {
-        val typeface = if (fontName != null)
+        val typeface = fontNameTypeFace ?: if (fontName != null)
             Typeface.createFromAsset(context.assets, "fonts/$fontName")
         else
             Typeface.create(Typeface.DEFAULT, textStyle)
